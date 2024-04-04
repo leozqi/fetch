@@ -30,3 +30,7 @@ The code aims to be:
 - to golang best practices
 - not one person's project, once I get this going
 
+# Please see
+
+- https://github.com/go-git/go-git/blob/master/COMPATIBILITY.md
+- https://github.com/golang-standards/project-layout/tree/master/docs
