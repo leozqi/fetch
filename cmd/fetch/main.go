@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	//	"log"
-	"os"
-
+	"github.com/leozqi/fetch/internal/gitpipe"
 	"github.com/urfave/cli/v2"
+	"os"
 )
 
 func main() {
@@ -18,6 +17,10 @@ func main() {
 				Usage: "Refresh list of packages",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Refreshed")
+					err := gitpipe.GetOrigin("https://github.com/leozqi/fetch-index.git")
+					if err != nil {
+						fmt.Println(err)
+					}
 					return nil
 				},
 			},

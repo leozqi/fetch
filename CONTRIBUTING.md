@@ -6,3 +6,12 @@ Please see:
 ```
 gofmt
 ```
+
+# Before commits
+
+Please run:
+
+```
+go get ./...
+go fmt ./...
+```
