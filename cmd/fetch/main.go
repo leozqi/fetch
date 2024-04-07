@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-//	"log"
+	//	"log"
 	"os"
 
 	"github.com/urfave/cli/v2"
@@ -18,7 +18,7 @@ func main() {
 				Usage: "Refresh list of packages",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Refreshed")
-                    return nil
+					return nil
 				},
 			},
 			{
@@ -26,7 +26,7 @@ func main() {
 				Usage: "Install a package",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Installed ", cCtx.Args().First())
-                    return nil
+					return nil
 				},
 			},
 			{
@@ -34,7 +34,7 @@ func main() {
 				Usage: "Update an preinstalled package",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Updated ", cCtx.Args().First())
-                    return nil
+					return nil
 				},
 			},
 			{
@@ -42,49 +42,49 @@ func main() {
 				Usage: "Uninstall an installed package",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Removed ", cCtx.Args().First())
-                    return nil
+					return nil
 				},
 			},
-            {
+			{
 				Name:  "list",
 				Usage: "Lists installed packages",
 				Action: func(cCtx *cli.Context) error {
 					fmt.Println("Removed ", cCtx.Args().First())
-                    return nil
+					return nil
 				},
 			},
-            {
-                Name: "view",
-                Usage: "View all files associated with package on computer",
-                Action: func(cCtx *cli.Context) error {
-                    fmt.Println("Viewed", cCtx.Args().First())
-                    return nil
-                },
-            },
-            {
-                Name: "depends",
-                Usage: "view all dependencies of the package"
-                Action: func(cCtx *cli.Context) error {
-                    fmt.Println("Depends", cCtx.Args().First())
-                    return nil
-                },
-            },
-            {
-                Name: "from",
-                Usage: "add new target repository for packages",
-                Action: func(cCtx *cli.Context) error {
-                    fmt.Println("Added new remote", cCtx.Args().First())
-                    return nil
-                },
-            },
-            {
-                Name: "sources",
-                Usage: "view all sources for packages",
-                Action: func(cCtx *cli.Context) error {
-                    fmt.Println("Added new source", cCtx.Args().First())
-                    return nil
-                },
-            },
+			{
+				Name:  "view",
+				Usage: "View all files associated with package on computer",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("Viewed", cCtx.Args().First())
+					return nil
+				},
+			},
+			{
+				Name:  "depends",
+				Usage: "view all dependencies of the package",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("Depends", cCtx.Args().First())
+					return nil
+				},
+			},
+			{
+				Name:  "from",
+				Usage: "add new target repository for packages",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("Added new remote", cCtx.Args().First())
+					return nil
+				},
+			},
+			{
+				Name:  "sources",
+				Usage: "view all sources for packages",
+				Action: func(cCtx *cli.Context) error {
+					fmt.Println("Added new source", cCtx.Args().First())
+					return nil
+				},
+			},
 		},
 	}
 
