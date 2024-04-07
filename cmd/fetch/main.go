@@ -2,10 +2,25 @@ package main
 
 import (
 	"fmt"
-	"github.com/leozqi/fetch/internal/gitpipe"
+	"github.com/leozqi/fetch/internal/manager"
 	"github.com/urfave/cli/v2"
 	"os"
 )
+
+func fromCmd(cCtx *cli.Context) error {
+	if cCtx.Args().Len() < 1 {
+		fmt.Println("Give target name")
+		os.Exit(1)
+	} else if cCtx.Args().Len() < 2 {
+		fmt.Println("Give repo URL")
+		os.Exit(1)
+	}
+
+	state := manager.LoadState()
+	err := manager.AddSource(state, cCtx.Args().First(), cCtx.Args().Get(1))
+	fmt.Println("Added new package source:", cCtx.Args().Get(0), "@", cCtx.Args().Get(1))
+	return err
+}
 
 func main() {
 	app := &cli.App{
@@ -16,11 +31,8 @@ func main() {
 				Name:  "refresh",
 				Usage: "Refresh list of packages",
 				Action: func(cCtx *cli.Context) error {
+					_ = manager.LoadState()
 					fmt.Println("Refreshed")
-					err := gitpipe.GetOrigin("https://github.com/leozqi/fetch-index.git")
-					if err != nil {
-						fmt.Println(err)
-					}
 					return nil
 				},
 			},
@@ -73,12 +85,9 @@ func main() {
 				},
 			},
 			{
-				Name:  "from",
-				Usage: "add new target repository for packages",
-				Action: func(cCtx *cli.Context) error {
-					fmt.Println("Added new remote", cCtx.Args().First())
-					return nil
-				},
+				Name:   "from",
+				Usage:  "add new source repository for packages",
+				Action: fromCmd,
 			},
 			{
 				Name:  "sources",

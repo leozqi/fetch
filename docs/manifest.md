@@ -4,13 +4,14 @@ The `manifest.toml` contains the build files
 
 # fetch on disk
 
-Fetch will store the following in `os.UserCacheDir()/fetch`:
+Fetch will store the following in `os.UserConfigDir()/fetch`:
 
 ```
-package1/
-    manifest.toml
-package2/
-    manifest.toml
+sources/
+- repo1/
+- repo2/
+
+state.json
 ```
 https://github.com/src-d/go-git/issues/430
 
