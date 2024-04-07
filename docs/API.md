@@ -18,3 +18,8 @@ If recurse, include the nth level dependencies (actually every package that must
 - `fetch from <GITHUB SRC>`: add a github repo for packages
 - `fetch sources`: list all the sources currently being used.
 
+
+Note that fetch view should also keep track of all folders the app uses like Library, or Application Support that would possibly be created.
+This way we can have purge plus uninstall.
+This info must be specified in the manifest as there is no isolation for this manager.
+Adding isolation could be considered in a future version
