@@ -23,13 +23,15 @@ func getStateFilePath() string {
 }
 
 type State struct {
-	Sources map[string]string `json:"sources"`
+	Sources        map[string]string `json:"sources"`
+	CurrentVersion map[string]string `json:"current_version"`
 }
 
 func LoadState() *State {
 	if _, err := os.Stat(getStateFilePath()); errors.Is(err, os.ErrNotExist) {
 		return &State{
-			Sources: map[string]string{},
+			Sources:        map[string]string{},
+			CurrentVersion: map[string]string{},
 		}
 	}
 
@@ -53,6 +55,19 @@ func LoadState() *State {
 	return &state
 }
 
+func SaveState(state *State) error {
+	repr, err := json.Marshal(state)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = ioutil.WriteFile(getStateFilePath(), repr, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func getSourceDir() string {
 	writeTo, err := os.UserConfigDir()
 
@@ -63,7 +78,7 @@ func getSourceDir() string {
 }
 
 func AddSource(state *State, name string, url string) error {
-	_, err := git.PlainClone(
+	r, err := git.PlainClone(
 		filepath.Join(getSourceDir(), "sources", name),
 		false,
 		&git.CloneOptions{
@@ -74,9 +89,40 @@ func AddSource(state *State, name string, url string) error {
 	if err != nil {
 		return err
 	}
-
+	ref, err := r.Head()
+	if err != nil {
+		return err
+	}
 	state.Sources[name] = url
+	state.CurrentVersion[name] = ref.Hash().String()
 
+	return nil
+}
+
+// Also need func to verify all manifest.toml are accurate
+// CLI tool to package app for platform automatically would be nice
+
+func RefreshSources(state *State) error {
+	for name, _ := range state.Sources {
+		r, err := git.PlainOpen(filepath.Join(getSourceDir(), "sources", name))
+		if err != nil {
+			return err
+		}
+		w, err := r.Worktree()
+		if err != nil {
+			return err
+		}
+
+		err = w.Pull(&git.PullOptions{RemoteName: "origin"})
+		if err != nil {
+			return err
+		}
+		ref, err := r.Head()
+		if err != nil {
+			return err
+		}
+		state.CurrentVersion[name] = ref.Hash().String()
+	}
 	return nil
 }
 
